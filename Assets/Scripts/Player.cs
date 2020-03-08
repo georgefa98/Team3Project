@@ -73,12 +73,12 @@ public class Player : MonoBehaviour
         } else if(crouching) {
             speed = crouchSpeed;
             //upperBody.localPosition = new Vector3(0f, 0f, 0f);
-            charContr.height = 1f;
+            charContr.height = 0.75f;
         }
 
         if(!crouching) {
             //upperBody.localPosition = new Vector3(0f, 0.5f, 0f);
-            charContr.height = 2f;
+            charContr.height = 1.5f;
         }
 
         charContr.Move(transform.rotation * new Vector3(h, 0f, v).normalized * speed * Time.deltaTime + Vector3.up * verticalSpeed * Time.deltaTime);

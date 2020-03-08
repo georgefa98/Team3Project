@@ -797,7 +797,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.05
-  lookSpeed: {x: 1, y: 1}
+  lookSpeed: {x: 3, y: 3}
+  jumpIntensity: 1
+  onGround: 0
 --- !u!54 &1508888407
 Rigidbody:
   m_ObjectHideFlags: 0

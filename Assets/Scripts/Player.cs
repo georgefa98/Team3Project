@@ -26,13 +26,15 @@ public class Player : MonoBehaviour
     public bool vulnerable;
     public bool running;
     public bool crouching;
+    private int currentItem;
 
     /* Physics */
     float verticalSpeed;
 
     /* Misc */
-    GameObject hand;
+    Transform hand;
     Transform upperBody;
+    public List<GameObject> inventory;
 
     /* Components */
     Camera cam;
@@ -48,6 +50,16 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         charContr = GetComponent<CharacterController>();
         upperBody = transform.GetChild(0);
+        hand = upperBody.GetChild(0);
+
+        if(inventory.Count > 0) {
+            GameObject itemObj = Instantiate(inventory[0], Vector3.zero, Quaternion.identity);
+            itemObj.transform.SetParent(hand);
+            itemObj.transform.localPosition = Vector3.zero;
+            itemObj.transform.localRotation = Quaternion.identity;
+        }
+
+        currentItem = 0;
     }
 
     void Update()
@@ -64,6 +76,31 @@ public class Player : MonoBehaviour
         transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * Time.deltaTime * mouseX, Vector3.up);
         cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * Time.deltaTime * mouseY, Vector3.left);
         
+
+        if(Input.GetMouseButtonDown(0)) {
+            try {
+                GameObject itemObj = hand.GetChild(0).gameObject;
+
+                if(itemObj) {
+                    Item item = itemObj.GetComponent<Item>();
+                    item.Use();
+                }
+            } catch {
+
+            }
+
+            
+        }
+        if(Input.GetMouseButtonDown(2) && inventory.Count > 0) {
+            Destroy(hand.GetChild(0).gameObject);
+
+            currentItem = (currentItem + 1) % inventory.Count;
+
+            GameObject itemObj = Instantiate(inventory[currentItem], Vector3.zero, Quaternion.identity);
+            itemObj.transform.SetParent(hand);
+            itemObj.transform.localPosition = Vector3.zero;
+            itemObj.transform.localRotation = Quaternion.identity;
+        }
     }
 
     void FixedUpdate() {

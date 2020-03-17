@@ -73,8 +73,8 @@ public class Player : MonoBehaviour
         crouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
         //player and camera rotation
-        transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * Time.deltaTime * mouseX, Vector3.up);
-        cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * Time.deltaTime * mouseY, Vector3.left);
+        transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
+        cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
         
 
         if(Input.GetMouseButtonDown(0)) {

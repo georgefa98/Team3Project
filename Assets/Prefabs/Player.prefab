@@ -140,6 +140,8 @@ MonoBehaviour:
   vulnerable: 0
   running: 0
   crouching: 0
+  inventory:
+  - {fileID: 7369394314164067623, guid: 19457ce41e845704a9c21a31cae2801c, type: 3}
 --- !u!143 &6582674853785981829
 CharacterController:
   m_ObjectHideFlags: 0
@@ -182,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6582674854299163608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.2, y: -0.194, z: 0.325}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6582674853117262180}

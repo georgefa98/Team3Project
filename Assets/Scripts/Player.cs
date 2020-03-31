@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
 
     bool fire;
     bool reload;
-    public bool switchItem;
+    bool switchItem;
+    bool aim;
 
     /* Movement Stats */
     public float crouchSpeed;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     public Vector2 lookSpeed;
     public float jumpIntensity;
     public float gravity;
+    public float aimTime;
 
     /* Game Stats */
     public float health;
@@ -34,11 +36,16 @@ public class Player : MonoBehaviour
     private int currentItem;
     private float switchingTimer;
 
+    private float aimTimer;
+
     /* Physics */
     float verticalSpeed;
 
     /* Misc */
     Transform hand;
+    Vector3 handPosition;
+    Vector3 aimedPosition = new Vector3(0f, -0.1f, 0.3f);
+
     Transform upperBody;
     public List<GameObject> inventory;
 
@@ -57,6 +64,7 @@ public class Player : MonoBehaviour
         charContr = GetComponent<CharacterController>();
         upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
+        handPosition = hand.localPosition;
 
         if(inventory.Count > 0) {
             GameObject itemObj = Instantiate(inventory[0], Vector3.zero, Quaternion.identity);
@@ -85,10 +93,7 @@ public class Player : MonoBehaviour
         fire = Input.GetButtonDown("Fire1");
         reload = Input.GetButtonDown("Reload");
         switchItem = Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > 0f;
-
-        /*Update position and rotation*/
-        transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
-        cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
+        aim = Input.GetButton("Aim");
         
         /*Fire*/
         if(fire || reload) {
@@ -107,6 +112,8 @@ public class Player : MonoBehaviour
 
             }
         }
+
+
         /*Switch item (scroll wheel)*/
         if(switchItem && switchingTimer <= 0f) {
             switchingTimer = 0.1f;
@@ -121,7 +128,12 @@ public class Player : MonoBehaviour
             itemObj.transform.localRotation = Quaternion.identity;
 
         }
-        /*Reload*/
+        
+        if(switchingTimer > 0f)
+            switchingTimer -= Time.deltaTime;
+
+
+        /*Reloading*/
         if(reload) {
             try {
                 GameObject itemObj = hand.GetChild(0).gameObject;
@@ -135,11 +147,37 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(switchingTimer > 0f)
-            switchingTimer -= Time.deltaTime;
+
+        /*Aiming*/
+        if(aim) {
+            hand.localPosition = Vector3.Lerp(handPosition, aimedPosition, aimTimer/aimTime);
+            
+            if(aimTimer + Time.deltaTime <= aimTime) {
+                aimTimer += Time.deltaTime;
+            } else {
+                aimTimer = aimTime;
+            }
+        }
+        else {
+            hand.localPosition = Vector3.Lerp(handPosition, aimedPosition, aimTimer/aimTime);
+
+            if(aimTimer - Time.deltaTime >= 0f) {
+                aimTimer -= Time.deltaTime;
+            } else {
+                aimTimer = 0f;
+            }
+        }
+
+            
+        /*Update rotation*/
+        transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
+        cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
     }
 
     void FixedUpdate() {
+
+        
+
         float speed = walkSpeed;
         if(running && !crouching) {
             speed = runSpeed;

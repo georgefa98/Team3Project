@@ -43,6 +43,18 @@ public class Gun : Item
             shot.Play();
             cooldownTimer = cooldown;
             ammo -= 1;
+
+            RaycastHit[] raycastHits =  Physics.RaycastAll(transform.position, transform.forward);
+            foreach(RaycastHit rch in raycastHits) {
+                if(rch.collider.gameObject.tag == "EnemyBody") {
+                    Debug.Log(rch.collider.gameObject.name);
+                    GameObject hitMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    hitMarker.transform.position = rch.point;
+                    hitMarker.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                }
+            }
+            
+
         } else if(ammo <= 0) {
             animator.SetTrigger("Dry");
             dry.Play();

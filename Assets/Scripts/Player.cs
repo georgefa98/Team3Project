@@ -10,6 +10,10 @@ public class Player : MonoBehaviour
     float mouseX, mouseY;
     float jump;
 
+    bool fire;
+    bool reload;
+    public bool switchItem;
+
     /* Movement Stats */
     public float crouchSpeed;
     public float walkSpeed;
@@ -26,7 +30,9 @@ public class Player : MonoBehaviour
     public bool vulnerable;
     public bool running;
     public bool crouching;
+
     private int currentItem;
+    private float switchingTimer;
 
     /* Physics */
     float verticalSpeed;
@@ -64,32 +70,47 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
+        /*Update player input*/
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
+
         mouseX = Input.GetAxis("Mouse X");
         mouseY = Input.GetAxis("Mouse Y");
+
         jump = Input.GetAxis("Jump");
         running = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         crouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
-        //player and camera rotation
+        fire = Input.GetButtonDown("Fire1");
+        reload = Input.GetButtonDown("Reload");
+        switchItem = Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > 0f;
+
+        /*Update position and rotation*/
         transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
         cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
         
-
-        if(Input.GetMouseButtonDown(0)) {
+        /*Fire*/
+        if(fire || reload) {
             try {
                 GameObject itemObj = hand.GetChild(0).gameObject;
 
                 if(itemObj) {
                     Item item = itemObj.GetComponent<Item>();
-                    item.Use();
+
+                    if(fire)
+                        item.Use();
+                    else if(reload)
+                        item.Refill();
                 }
             } catch {
 
             }
         }
-        if(Input.GetMouseButtonDown(2) && inventory.Count > 0) {
+        /*Switch item (scroll wheel)*/
+        if(switchItem && switchingTimer <= 0f) {
+            switchingTimer = 0.1f;
+
             Destroy(hand.GetChild(0).gameObject);
 
             currentItem = (currentItem + 1) % inventory.Count;
@@ -98,8 +119,10 @@ public class Player : MonoBehaviour
             itemObj.transform.SetParent(hand);
             itemObj.transform.localPosition = Vector3.zero;
             itemObj.transform.localRotation = Quaternion.identity;
+
         }
-        if(Input.GetMouseButtonDown(1)) {
+        /*Reload*/
+        if(reload) {
             try {
                 GameObject itemObj = hand.GetChild(0).gameObject;
 
@@ -111,6 +134,9 @@ public class Player : MonoBehaviour
 
             }
         }
+
+        if(switchingTimer > 0f)
+            switchingTimer -= Time.deltaTime;
     }
 
     void FixedUpdate() {

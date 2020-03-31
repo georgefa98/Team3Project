@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Flashlight : Item
 {
-    Light light;
+    Light spotLight;
 
     void Start()
     {
-        light = GetComponentInChildren<Light>();
+        spotLight = GetComponentInChildren<Light>();
     }
 
     public override void Use() {
-        light.enabled = !light.enabled;
+        spotLight.enabled = !spotLight.enabled;
     }
 }

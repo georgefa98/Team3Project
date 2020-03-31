@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
         cam = GetComponentInChildren<Camera>();
         rigid = GetComponent<Rigidbody>();
         charContr = GetComponent<CharacterController>();
-        upperBody = transform.GetChild(0);
+        upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
 
         if(inventory.Count > 0) {
@@ -88,8 +88,6 @@ public class Player : MonoBehaviour
             } catch {
 
             }
-
-            
         }
         if(Input.GetMouseButtonDown(2) && inventory.Count > 0) {
             Destroy(hand.GetChild(0).gameObject);
@@ -100,6 +98,18 @@ public class Player : MonoBehaviour
             itemObj.transform.SetParent(hand);
             itemObj.transform.localPosition = Vector3.zero;
             itemObj.transform.localRotation = Quaternion.identity;
+        }
+        if(Input.GetMouseButtonDown(1)) {
+            try {
+                GameObject itemObj = hand.GetChild(0).gameObject;
+
+                if(itemObj) {
+                    Item item = itemObj.GetComponent<Item>();
+                    item.Refill();
+                }
+            } catch {
+
+            }
         }
     }
 

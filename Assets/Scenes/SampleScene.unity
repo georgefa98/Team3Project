@@ -714,9 +714,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1189489562
 MeshRenderer:
@@ -938,24 +938,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1265621229 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6582525510434673621, guid: fc4381bba438c5f449c4c1704a2ecb2f,
-    type: 3}
-  m_PrefabInstance: {fileID: 6582674854965714141}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1265621234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265621229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ecc14c7c2cc61a418e4f7819380eb49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1695116678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1331,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582674853785981835, guid: fc4381bba438c5f449c4c1704a2ecb2f,
+        type: 3}
+      propertyPath: lookSpeed.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582674853785981835, guid: fc4381bba438c5f449c4c1704a2ecb2f,
+        type: 3}
+      propertyPath: lookSpeed.y
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc4381bba438c5f449c4c1704a2ecb2f, type: 3}

@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     NavMeshAgent agent;
     Transform player;
     Animator animator;
+	private static int health = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,25 @@ public class Enemy : MonoBehaviour
             agent.SetDestination(player.position);
         else
             agent.SetDestination(transform.position);
+		
+		if (health <= 0)
+			Die();
     }
+	
+	public void setHealth(int newHealth)
+	{
+		health = newHealth;
+	}
+	
+	public int getHealth()
+	{
+		return health;
+	}
+	
+	void Die()
+	{
+		//Death animation here
+		
+		Destroy(gameObject);
+	}
 }

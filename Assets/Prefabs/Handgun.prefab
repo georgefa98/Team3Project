@@ -415,6 +415,8 @@ MonoBehaviour:
   cooldown: 0.45
   ammo: 9
   capacity: 9
+  damage: 50
+  shootRange: 100
 --- !u!1 &9019924381752617907
 GameObject:
   m_ObjectHideFlags: 0

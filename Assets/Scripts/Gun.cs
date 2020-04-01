@@ -7,6 +7,8 @@ public class Gun : Item
     public float cooldown;
     public int ammo;
     public int capacity;
+	public int damage = 50; 	// Damage done to target
+	public int shootRange = 100; //shooting range of gun
 
     GameObject meshObject;
     Animator animator;
@@ -48,9 +50,16 @@ public class Gun : Item
             foreach(RaycastHit rch in raycastHits) {
                 if(rch.collider.gameObject.tag == "EnemyBody") {
                     Debug.Log(rch.collider.gameObject.name);
+					
                     GameObject hitMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     hitMarker.transform.position = rch.point;
                     hitMarker.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+					
+					//Decrease health
+					int enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
+					enemy_health = enemy_health - damage;
+					rch.collider.gameObject.transform.root.GetComponent<Enemy>().setHealth(enemy_health);
+					// Add blood splatter here
                 }
             }
             

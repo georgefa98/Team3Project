@@ -2,37 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Mob
 {
 
     /* Input */
-    float h, v;
-    float mouseX, mouseY;
-    float jump;
-
     bool fire;
     bool reload;
     bool switchItem;
     bool aim;
     bool toggleInventory;
 
-    /* Movement Stats */
-    public float crouchSpeed;
-    public float walkSpeed;
-    public float runSpeed;
-    public Vector2 lookSpeed;
-    public float jumpIntensity;
-    public float gravity;
-
     /* Game Stats */
-    public float health;
+    float energy;
 
     /* States */
-    public bool alive;
-    public bool vulnerable;
-    public bool running;
-    public bool crouching;
-
     private int currentItem;
     private float switchingTimer;
 
@@ -41,28 +24,14 @@ public class Player : MonoBehaviour
 
     public bool uiMode;
 
-    /* Physics */
-    float verticalSpeed;
-
     /* Misc */
     Transform hand;
 
     Transform upperBody;
     public List<GameObject> tools;
 
-    /* Components */
-    Camera cam;
-    Rigidbody rigid;
-    CharacterController charContr;
-
     void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
-        cam = GetComponentInChildren<Camera>();
-        rigid = GetComponent<Rigidbody>();
-        charContr = GetComponent<CharacterController>();
         upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
 
@@ -74,21 +43,16 @@ public class Player : MonoBehaviour
         }
 
         currentItem = 0;
+
+
+        health = 100f;
+        energy = 100f;
+        alive = true;
     }
 
     void Update()
     {
         /*Update player input*/
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
-
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
-
-        jump = Input.GetAxis("Jump");
-        running = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        crouching = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
-
         fire = Input.GetButtonDown("Fire1");
         reload = Input.GetButtonDown("Reload");
         switchItem = Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > 0f;
@@ -163,8 +127,6 @@ public class Player : MonoBehaviour
                 justStartedAiming = true;
             }
             
-            transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
-            cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
         }
 
         /* Inventory */
@@ -182,33 +144,8 @@ public class Player : MonoBehaviour
             }
         }
 
-    }
+        this.TakeEnergy(-Time.deltaTime);
 
-    void FixedUpdate() {
-
-        
-
-        float speed = walkSpeed;
-        if(running && !crouching) {
-            speed = runSpeed;
-        } else if(crouching) {
-            speed = crouchSpeed;
-            //upperBody.localPosition = new Vector3(0f, 0f, 0f);
-            charContr.height = 0.75f;
-        }
-
-        if(!crouching) {
-            //upperBody.localPosition = new Vector3(0f, 0.5f, 0f);
-            charContr.height = 1.5f;
-        }
-
-        charContr.Move(transform.rotation * new Vector3(h, 0f, v).normalized * speed * Time.deltaTime + Vector3.up * verticalSpeed * Time.deltaTime);
-
-        if(charContr.isGrounded) {
-            verticalSpeed = jump * jumpIntensity;
-        } else {
-            verticalSpeed -= gravity * Time.deltaTime;
-        }
     }
 
     public float GetWeaponCharge() {
@@ -221,6 +158,19 @@ public class Player : MonoBehaviour
         }
 
         return 0f;
+    }
+
+    public float Energy {
+        get { return energy; }
+    }
+
+    public void TakeEnergy(float cost) {
+        energy = Mathf.Clamp(energy - cost, 0f, 100f);
+    }
+
+    public override IEnumerator Die() {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("You Died");
     }
 
 }

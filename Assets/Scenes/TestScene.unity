@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 507888275}
   - component: {fileID: 507888277}
   - component: {fileID: 507888276}
+  - component: {fileID: 507888278}
   m_Layer: 5
   m_Name: Crosshair
   m_TagString: Untagged
@@ -593,6 +594,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507888274}
   m_CullTransparentMesh: 0
+--- !u!114 &507888278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507888274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa5df27bcb15d14f893e99cc3a7da15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &600535060
 GameObject:
   m_ObjectHideFlags: 0

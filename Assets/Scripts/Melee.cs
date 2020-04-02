@@ -6,9 +6,13 @@ public class Melee : Weapon
 {
 
     public float chargeSpeed;
+    public GameObject swingAudio;
+    public float minPitch;
+    public float maxPitch;
+    public float minVolume;
+    public float maxVolume;
 
-    Animator anim;
-
+    private Animator anim;
     private float power;
     
     void Start()
@@ -25,6 +29,12 @@ public class Melee : Weapon
 
     public override void Use() {
         anim.SetTrigger("Attack");
+
+        /* play swing audio */
+        AudioSource swingAudioSource = Instantiate(swingAudio).GetComponent<AudioSource>();
+        swingAudioSource.pitch = Mathf.Lerp(minPitch, maxPitch, power);
+        swingAudioSource.volume = Mathf.Lerp(minVolume, maxVolume, power);
+
         power = 0;
     }
 
@@ -39,6 +49,10 @@ public class Melee : Weapon
         anim.SetBool("Charging", false);
         anim.ResetTrigger("Attack");
         power = 0f;
+    }
+
+    public override float GetCharge() {
+        return power;
     }
 
 }

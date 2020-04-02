@@ -63,7 +63,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c82c86091212554c967f8df152c7788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 2
   chargeSpeed: 1
+  swingAudio: {fileID: 7724186153001843015, guid: b9a281e797c7f1547add98afe646dc7d,
+    type: 3}
+  minPitch: 0.75
+  maxPitch: 1.1
+  minVolume: 0.25
+  maxVolume: 1
 --- !u!1001 &1036088107065746849
 PrefabInstance:
   m_ObjectHideFlags: 0

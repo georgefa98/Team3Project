@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
 
         }
         
+        /* Aiming */
         if(switchingTimer > 0f)
             switchingTimer -= Time.deltaTime;
 
@@ -145,7 +146,6 @@ public class Player : MonoBehaviour
 
         }
 
-        /*Aiming*/
         if(aim) {
             if(justStartedAiming) {
                 justStartedAiming = false;
@@ -160,7 +160,7 @@ public class Player : MonoBehaviour
         }
 
             
-        /*Update rotation*/
+        /* Update rotation */
         transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
         cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
     }
@@ -190,6 +190,18 @@ public class Player : MonoBehaviour
         } else {
             verticalSpeed -= gravity * Time.deltaTime;
         }
+    }
+
+    public float GetWeaponCharge() {
+        if(hand.transform.childCount > 0) {
+            GameObject obj = hand.transform.GetChild(0).gameObject;
+            Weapon weapon = obj.GetComponent<Weapon>();
+            if(weapon != null) {
+                return weapon.GetCharge();
+            }
+        }
+
+        return 0f;
     }
 
 }

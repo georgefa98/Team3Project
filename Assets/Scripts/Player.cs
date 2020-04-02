@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     public Vector2 lookSpeed;
     public float jumpIntensity;
     public float gravity;
-    public float aimTime;
 
     /* Game Stats */
     public float health;
@@ -36,15 +35,14 @@ public class Player : MonoBehaviour
     private int currentItem;
     private float switchingTimer;
 
-    private float aimTimer;
+    public bool justStartedAiming;
+    public bool justStoppedAiming;
 
     /* Physics */
     float verticalSpeed;
 
     /* Misc */
     Transform hand;
-    Vector3 handPosition;
-    Vector3 aimedPosition = new Vector3(0f, -0.1f, 0.3f);
 
     Transform upperBody;
     public List<GameObject> inventory;
@@ -64,7 +62,6 @@ public class Player : MonoBehaviour
         charContr = GetComponent<CharacterController>();
         upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
-        handPosition = hand.localPosition;
 
         if(inventory.Count > 0) {
             GameObject itemObj = Instantiate(inventory[0], Vector3.zero, Quaternion.identity);
@@ -132,40 +129,34 @@ public class Player : MonoBehaviour
         if(switchingTimer > 0f)
             switchingTimer -= Time.deltaTime;
 
+        try {
+            GameObject itemObj = hand.GetChild(0).gameObject;
 
-        /*Reloading*/
-        if(reload) {
-            try {
-                GameObject itemObj = hand.GetChild(0).gameObject;
+            if(itemObj) {
+                Weapon weapon = itemObj.GetComponent<Weapon>();
 
-                if(itemObj) {
-                    Item item = itemObj.GetComponent<Item>();
-                    item.Refill();
+                if(aim && justStartedAiming) {
+                    weapon.StartAiming();
+                } else if(!aim && justStoppedAiming) {
+                    weapon.StopAiming();
                 }
-            } catch {
-
             }
-        }
+        } catch {
 
+        }
 
         /*Aiming*/
         if(aim) {
-            hand.localPosition = Vector3.Lerp(handPosition, aimedPosition, aimTimer/aimTime);
-            
-            if(aimTimer + Time.deltaTime <= aimTime) {
-                aimTimer += Time.deltaTime;
-            } else {
-                aimTimer = aimTime;
+            if(justStartedAiming) {
+                justStartedAiming = false;
+                
             }
-        }
-        else {
-            hand.localPosition = Vector3.Lerp(handPosition, aimedPosition, aimTimer/aimTime);
-
-            if(aimTimer - Time.deltaTime >= 0f) {
-                aimTimer -= Time.deltaTime;
-            } else {
-                aimTimer = 0f;
+            justStoppedAiming = true;
+        } else {
+            if(justStoppedAiming) {
+                justStoppedAiming = false;
             }
+            justStartedAiming = true;
         }
 
             

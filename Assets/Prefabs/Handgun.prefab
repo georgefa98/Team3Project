@@ -417,6 +417,8 @@ MonoBehaviour:
   capacity: 9
   damage: 50
   shootRange: 100
+  aimSpeed: 3
+  aimedPosition: {x: 0, y: -0.1, z: 0.3}
 --- !u!1 &9019924381752617907
 GameObject:
   m_ObjectHideFlags: 0

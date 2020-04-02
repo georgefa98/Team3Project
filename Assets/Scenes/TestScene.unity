@@ -171,7 +171,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -287,6 +287,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6582674853785981835, guid: fc4381bba438c5f449c4c1704a2ecb2f,
         type: 3}
+      propertyPath: inventory.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582674853785981835, guid: fc4381bba438c5f449c4c1704a2ecb2f,
+        type: 3}
       propertyPath: lookSpeed.x
       value: 2
       objectReference: {fileID: 0}
@@ -300,6 +305,12 @@ PrefabInstance:
       propertyPath: aimTime
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 6582674853785981835, guid: fc4381bba438c5f449c4c1704a2ecb2f,
+        type: 3}
+      propertyPath: inventory.Array.data[2]
+      value: 
+      objectReference: {fileID: 3900074280909770932, guid: fb55ec22a3642ed43b0e7cab6f99ad95,
+        type: 3}
     - target: {fileID: 6582674854299163611, guid: fc4381bba438c5f449c4c1704a2ecb2f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -357,7 +368,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -1742,7 +1753,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27c54118f0bf25347805f9021673b5d7, type: 2}
+  - {fileID: 2100000, guid: 6144ee405786047648e30c552da2959b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1824,7 +1835,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357935433}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2184,7 +2195,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -2276,7 +2287,7 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05

@@ -7,7 +7,6 @@ public class Gun : Weapon
     public float cooldown;
     public int ammo;
     public int capacity;
-	public int damage = 50; 	// Damage done to target
 	public int shootRange = 100; //shooting range of gun
     public float aimSpeed;
 
@@ -71,7 +70,7 @@ public class Gun : Weapon
                     hitMarker.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 					
 					//Decrease health
-					int enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
+					float enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
 					enemy_health = enemy_health - damage;
 					rch.collider.gameObject.transform.root.GetComponent<Enemy>().setHealth(enemy_health);
 					// Add blood splatter here
@@ -99,5 +98,9 @@ public class Gun : Weapon
 
     public override void StopAiming() {
         aiming = false;
+    }
+
+    public override float GetCharge() {
+        return centeredness;
     }
 }

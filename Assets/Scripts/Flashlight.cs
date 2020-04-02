@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flashlight : Item
+public class Flashlight : Tool
 {
     Light spotLight;
     AudioSource buttonPress;

@@ -7,6 +7,8 @@ TagManager:
   - SunLight
   - Enemy
   - EnemyBody
+  - InventoryUI
+  - ItemInfo
   layers:
   - Default
   - TransparentFX

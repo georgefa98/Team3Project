@@ -6,33 +6,32 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public int nItemsWidth;
-    InventoryController inventoryController;
+    public InventoryController inventoryController;
+    public GrabbedItem grabbedItem;
+
     RectTransform mainPanel;
     GameObject itemButton;
     GameObject[] slots;
     GameObject infoPanel;
-
-    public GrabbedItem grabbedItem;
-    public Item selected;
-    public int selectedIndex;
-    public bool isHalf;
+    System.Random random;
 
     bool active;
 
     // Start is called before the first frame update
     void Start()
     {
-        inventoryController = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryController>();
+        random = new System.Random();
+
+        //inventoryController = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryController>();
         mainPanel = GetComponent<RectTransform>();
         itemButton = Resources.Load("Prefabs/UI/ItemButton") as GameObject;
         infoPanel = GameObject.FindGameObjectWithTag("ItemInfo") as GameObject;
-
-        grabbedItem.AllowClickThrough();
     }
 
     public void Toggle() {
         if(!active) {
             Generate();
+
         } else {
             Ripdown();
 
@@ -75,83 +74,93 @@ public class InventoryUI : MonoBehaviour
 
         grabbedItem.Hide();
 
-        isHalf = false;
-
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, 0f);
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, 0f);
     }
 
     public void Grab(int index, Item item) {
-        if(item != null && selected != null && item.itemInfo.itemName == selected.itemInfo.itemName) {
+        if(item != null && grabbedItem.CurrentItem != null && item.itemInfo.itemName == grabbedItem.CurrentItem.itemInfo.itemName) {
             Combine(index, item);
         } else {
-            slots[index].GetComponent<ItemSlot>().CurrentItem = selected;
-            inventoryController.Insert(selected, index);
+
+            slots[index].GetComponent<ItemSlot>().CurrentItem = grabbedItem.CurrentItem;
+            inventoryController.Insert(grabbedItem.CurrentItem, index);
 
             if(item != null) {
                 grabbedItem.CurrentItem = item;
                 grabbedItem.Show();
-                selected = item;
-                selectedIndex = index;
+                grabbedItem.CurrentItem = item;
             } else {
                 grabbedItem.Hide();
-                selected = null;
-                selectedIndex = 0;
+                grabbedItem.CurrentItem = null;
             }
         }
     }
 
     public void GrabHalf(int index, Item item) {
-        if(item == null && selected == null)
+
+        /* holding no item and no item in slot,    do nothing */
+        if(item == null && grabbedItem.CurrentItem == null)
             return;
-            
+
+        /* Create new items to hold halves */    
         Item first = ScriptableObject.CreateInstance("Item") as Item;
         Item second = ScriptableObject.CreateInstance("Item") as Item;
         
         if(item != null)
             first.itemInfo = item.itemInfo;
         else
-            first.itemInfo = selected.itemInfo;
+            first.itemInfo = grabbedItem.CurrentItem.itemInfo;
 
         second.itemInfo = first.itemInfo;
 
-        if(selected != null) {
+        /* Holding item */
+        if(grabbedItem.CurrentItem != null) {
+
+            /* Slot has item */
             if(item != null) {
-                if(selected.itemInfo.itemName == item.itemInfo.itemName) {
-                    second.stackAmount = selected.stackAmount / 2;
-                    first.stackAmount = (selected.stackAmount - second.stackAmount) + item.stackAmount;
+
+                /* Slot item is the same,   give half of what is held to the slot */
+                if(grabbedItem.CurrentItem.itemInfo.itemName == item.itemInfo.itemName) {
+                    second.stackAmount = grabbedItem.CurrentItem.stackAmount / 2;
+                    first.stackAmount = (grabbedItem.CurrentItem.stackAmount - second.stackAmount) + item.stackAmount;
 
                     if(first.stackAmount > item.itemInfo.maxStackAmount) {
                         second.stackAmount = second.stackAmount + (first.stackAmount - item.itemInfo.maxStackAmount);
                         first.stackAmount = item.itemInfo.maxStackAmount;
                     }
 
-                } else {
+                }
+                /* Slot item is different,    do nothing */
+                else {
                     return;
                 }
-            } else {
-                first.stackAmount = selected.stackAmount/2;
-                second.stackAmount = selected.stackAmount - first.stackAmount;
             }
-        } else {
+            /* Slot is blank,    give half of what is held to the slot */
+            else {
+                first.stackAmount = grabbedItem.CurrentItem.stackAmount/2;
+                second.stackAmount = grabbedItem.CurrentItem.stackAmount - first.stackAmount;
+            }
+        }
+        /* Not holding item (slot is not empty),   hold half of what's in the slot */
+        else {
             first.stackAmount = item.stackAmount/2;
             second.stackAmount = item.stackAmount - first.stackAmount;
         }
 
+        /* assign items to slot and 'hand' */
         if(first.stackAmount > 0)
             slots[index].GetComponent<ItemSlot>().CurrentItem = first;
         else
             slots[index].GetComponent<ItemSlot>().CurrentItem = null;
 
         if(second.stackAmount > 0) {
-            selected = second;
             grabbedItem.CurrentItem = second;
             grabbedItem.Show();
         } else {
             grabbedItem.Hide();
+            grabbedItem.CurrentItem = null;
         }
-
-        selectedIndex = index;
     }
 
     public void Combine(int toIndex, Item item) {
@@ -159,7 +168,7 @@ public class InventoryUI : MonoBehaviour
 
         Item newItem = ScriptableObject.CreateInstance("Item") as Item;
 
-        int amount = item.stackAmount + selected.stackAmount;
+        int amount = item.stackAmount + grabbedItem.CurrentItem.stackAmount;
         int leftover = 0;
 
         if(amount > item.itemInfo.maxStackAmount) {
@@ -177,13 +186,25 @@ public class InventoryUI : MonoBehaviour
             Item newItem2 = ScriptableObject.CreateInstance("Item") as Item;
             newItem2.itemInfo = item.itemInfo;
             newItem2.stackAmount = leftover;
-
-            slots[selectedIndex].GetComponent<ItemSlot>().CurrentItem = newItem2;
-            inventoryController.Insert(newItem2, selectedIndex);
+            grabbedItem.CurrentItem = newItem2;
         }
 
-        selected = null;
-        selectedIndex = 0;
-        isHalf = false;
+        grabbedItem.CurrentItem = null;
     }
+
+    public int GetInventorySpace() {
+        if(slots != null)
+            return slots.Length;
+        else
+            return 0;
+    }
+
+    public void ReportSlotClicked() {
+        grabbedItem.ReportSlotClicked();
+    }
+
+    public void ReportSlotNotClicked() {
+        grabbedItem.ReportSlotNotClicked();
+    }
+    
 }

@@ -10,7 +10,9 @@ public class Player : Mob
     bool reload;
     bool switchItem;
     bool aim;
-    bool toggleInventory;
+    bool openInventory;
+    bool interact;
+    bool exit;
 
     /* Game Stats */
     float energy;
@@ -23,12 +25,15 @@ public class Player : Mob
     public bool justStoppedAiming;
 
     public bool uiMode;
+    public string uiType;
 
     /* Misc */
     Transform hand;
     FPSController fps;
     Transform upperBody;
     public List<GameObject> tools;
+    public InventoryUI lootingInventory;
+    public InventoryUI inventory;
 
     void Start()
     {
@@ -45,7 +50,6 @@ public class Player : Mob
 
         currentItem = 0;
 
-
         health = 100f;
         energy = 100f;
         alive = true;
@@ -53,12 +57,15 @@ public class Player : Mob
 
     void Update()
     {
+
         /*Update player input*/
         fire = Input.GetButtonDown("Fire1");
         reload = Input.GetButtonDown("Reload");
         switchItem = Mathf.Abs(Input.GetAxis("Mouse ScrollWheel")) > 0f;
         aim = Input.GetButton("Aim");
-        toggleInventory = Input.GetButtonDown("Inventory");
+        openInventory = Input.GetButtonDown("Inventory");
+        interact = Input.GetButtonDown("Interact");
+        exit = Input.GetButtonDown("Cancel");
         
         if(!uiMode) {
             /*Fire*/
@@ -76,6 +83,19 @@ public class Player : Mob
                     }
                 } catch {
 
+                }
+            }
+
+            /* Interact (E) */
+            if(interact) {
+                RaycastHit raycastHit;
+                if(Physics.Raycast(upperBody.position, upperBody.forward, out raycastHit, 3f)) {
+                    if(raycastHit.collider.gameObject.tag == "Interactive") {
+                        lootingInventory.inventoryController = raycastHit.collider.gameObject.GetComponent<InventoryController>();
+                        inventory.Toggle();
+                        lootingInventory.Toggle();
+                        EnterUIMode("LootingInventory");
+                    }
                 }
             }
 
@@ -127,27 +147,42 @@ public class Player : Mob
                 }
                 justStartedAiming = true;
             }
+
+            /* Inventory */
+            if(openInventory) {
+                inventory.Toggle();
+                EnterUIMode("Inventory");
+            }
             
-        }
-
-        /* Inventory */
-        if(toggleInventory) {
-            GameObject.FindGameObjectWithTag("InventoryUI").GetComponent<InventoryUI>().Toggle();
-
-            if(!uiMode) {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                uiMode = true;
-                fps.uiMode = true;
-            } else {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                uiMode = false;
-                fps.uiMode = false;
+        } else {
+            if(exit) {
+                LeaveUIMode();
             }
         }
 
         this.TakeEnergy(-Time.deltaTime);
+
+    }
+
+    public void EnterUIMode(string uiType) {
+        this.uiType = uiType;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        uiMode = true;
+        fps.uiMode = true;
+    }
+    public void LeaveUIMode() {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        uiMode = false;
+        fps.uiMode = false;
+
+        if(uiType == "Inventory") {
+            inventory.Toggle();
+        } else if(uiType == "LootingInventory") {
+            inventory.Toggle();
+            lootingInventory.Toggle();
+        }
 
     }
 

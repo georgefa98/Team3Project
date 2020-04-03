@@ -32,13 +32,22 @@ public class ItemSlot : MonoBehaviour
         inventoryUI = transform.parent.GetComponent<InventoryUI>();
     }
 
-    void Update() {
+    /* Because this is run in late update,
+    the InventoryUI can set itemClickedSlot to false*/
+    void LateUpdate() {
         if(hovering) {
+            
             if(Input.GetMouseButtonDown(0)) {
                 OnClick(0);
+                inventoryUI.ReportSlotClicked();
             }
             else if(Input.GetMouseButtonDown(1)) {
                 OnClick(1);
+                inventoryUI.ReportSlotClicked();
+            }
+        } else {
+            if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+                inventoryUI.ReportSlotNotClicked();
             }
         }
     }

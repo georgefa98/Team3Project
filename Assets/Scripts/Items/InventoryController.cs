@@ -13,6 +13,7 @@ public class InventoryController : MonoBehaviour
     {
         inventory = ScriptableObject.CreateInstance("Inventory") as Inventory;
         inventory.items = new List<Item>();
+
         for(int i = 0; i < inventoryValues.items.Count; i++) {
             inventory.items.Add(inventoryValues.items[i]);
         }
@@ -20,7 +21,6 @@ public class InventoryController : MonoBehaviour
 
     public int Length {
         get { return inventory.items.Count; }
-        set { inventory.items.Capacity = value; }
     }
 
     public Item GetItem(int n) {
@@ -39,6 +39,20 @@ public class InventoryController : MonoBehaviour
 
     public void Remove(int n) {
         inventory.items[n] = null;
+    }
+
+    public void ChangeCapacity(int capacity) {
+        if(capacity < 0)
+            return;
+        
+        if(capacity < Length)
+            inventory.items.RemoveRange(capacity, Length - capacity);
+
+        if(capacity > Length) {
+            for(int i = 0; i < capacity - Length; i++) {
+                inventory.items.Insert(Length, null);
+            }
+        }
     }
 
 }

@@ -15,9 +15,17 @@ public class GrabbedItem : MonoBehaviour
 
     Item item;
 
+    private bool total;
+    private bool itemSlotWasClicked;
+    private int nReported;
+
+    GameObject discardBoxPref;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        discardBoxPref = Resources.Load("Prefabs/UI/DiscardBox") as GameObject;
         rectTransform = GetComponent<RectTransform>();
         panel = GetComponent<Image>();
         icon = transform.GetChild(0).GetComponent<Image>();
@@ -27,12 +35,18 @@ public class GrabbedItem : MonoBehaviour
         emptyCellColor = icon.color;
 
         AllowClickThrough();
+        Hide();
     }
 
     // Update is called once per frame
     void Update()
     {
         rectTransform.anchoredPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        
+        if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+            itemSlotWasClicked = false;
+            nReported = 0;
+        }
     }
 
     public Item CurrentItem {
@@ -69,5 +83,45 @@ public class GrabbedItem : MonoBehaviour
         panel.enabled = true;
         icon.enabled = true;
         stackAmount.enabled = true;
+    }
+
+    public void ReportSlotClicked() {
+        itemSlotWasClicked = true;
+        nReported++;
+    }
+
+    public void ReportSlotNotClicked() {
+        nReported++;
+        int total = GetTotalInventorySpace();
+        if(nReported == total && !itemSlotWasClicked) {
+            //Debug.Log("Discard");
+            Discard();
+        }
+    }
+
+    private int GetTotalInventorySpace() {
+        int total = 0;
+        GameObject[] invObjs = GameObject.FindGameObjectsWithTag("InventoryUI");
+        
+        foreach(GameObject invObj in invObjs) {
+            Debug.Log(invObj);
+            InventoryUI invUI = invObj.GetComponent<InventoryUI>();
+            total += invUI.GetInventorySpace();
+        }
+        return total;
+    }
+
+    public void Discard() {
+        if(CurrentItem != null) {
+
+            Transform player = GameObject.FindGameObjectWithTag("Player").transform;
+            GameObject discardBox = Instantiate(discardBoxPref, player.position + player.forward * 2f, Quaternion.identity);
+            InventoryController boxIC = discardBox.GetComponent<InventoryController>();
+            boxIC.ChangeCapacity(1);
+            boxIC.Insert(CurrentItem, 0);
+        }
+
+        CurrentItem = null;
+        Hide();
     }
 }

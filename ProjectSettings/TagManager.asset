@@ -9,6 +9,7 @@ TagManager:
   - EnemyBody
   - InventoryUI
   - ItemInfo
+  - Interactive
   layers:
   - Default
   - TransparentFX

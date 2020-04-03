@@ -8,11 +8,10 @@ public class InventoryController : MonoBehaviour
     public Inventory inventoryValues;
 
     private Inventory inventory;
-
     
     void Awake()
     {
-        inventory = new Inventory();
+        inventory = ScriptableObject.CreateInstance("Inventory") as Inventory;
         inventory.items = new List<Item>();
         for(int i = 0; i < inventoryValues.items.Count; i++) {
             inventory.items.Add(inventoryValues.items[i]);
@@ -21,9 +20,7 @@ public class InventoryController : MonoBehaviour
 
     public int Length {
         get { return inventory.items.Count; }
-        set {
-            inventory.items.Capacity = value;
-        }
+        set { inventory.items.Capacity = value; }
     }
 
     public Item GetItem(int n) {
@@ -34,6 +31,14 @@ public class InventoryController : MonoBehaviour
         Item tmp = inventory.items[a];
         inventory.items[a] = inventory.items[b];
         inventory.items[b] = tmp;
+    }
+
+    public void Insert(Item item, int n) {
+        inventory.items[n] = item;
+    }
+
+    public void Remove(int n) {
+        inventory.items[n] = null;
     }
 
 }

@@ -9,15 +9,19 @@ public class ItemSlot : MonoBehaviour
     GameObject infoPanel;
     InventoryUI inventoryUI;
     Image image;
+    Text stackAmount;
     
     public Sprite emptyCellSprite;
     public Color emptyCellColor;
+
+    public bool hovering;
     
     private Item item;
     public int index;
 
     void Awake() {
         image = transform.GetChild(0).GetComponent<Image>();
+        stackAmount = transform.GetChild(1).GetComponent<Text>();
         
         emptyCellSprite = image.sprite;
         emptyCellColor = image.color;
@@ -26,8 +30,17 @@ public class ItemSlot : MonoBehaviour
     void Start() {
         infoPanel = GameObject.FindGameObjectWithTag("ItemInfo");
         inventoryUI = transform.parent.GetComponent<InventoryUI>();
+    }
 
-        
+    void Update() {
+        if(hovering) {
+            if(Input.GetMouseButtonDown(0)) {
+                OnClick(0);
+            }
+            else if(Input.GetMouseButtonDown(1)) {
+                OnClick(1);
+            }
+        }
     }
 
     public void OnPointerEnter() {
@@ -36,6 +49,7 @@ public class ItemSlot : MonoBehaviour
         for(int i = 0; i < infoPanel.transform.childCount; i++) {
             infoPanel.transform.GetChild(i).gameObject.SetActive(true);
         }
+
         Text itemName = infoPanel.transform.GetChild(0).GetComponent<Text>();
         Text description = infoPanel.transform.GetChild(1).GetComponent<Text>();
 
@@ -43,10 +57,11 @@ public class ItemSlot : MonoBehaviour
             itemName.text = item.itemInfo.itemName;
             description.text = item.itemInfo.description;
         } else {
-            itemName.text = "Empty";
+            itemName.text = "";
             description.text = "";
         }
-        
+
+        hovering = true;
     }
 
     public void OnPointerExit() {
@@ -54,6 +69,8 @@ public class ItemSlot : MonoBehaviour
         for(int i = 0; i < infoPanel.transform.childCount; i++) {
             infoPanel.transform.GetChild(i).gameObject.SetActive(false);
         }
+
+        hovering = false;
     }
 
     public Item CurrentItem {
@@ -65,20 +82,20 @@ public class ItemSlot : MonoBehaviour
             if(item != null) {
                 image.sprite = item.itemInfo.icon;
                 image.color = Color.white;
+                stackAmount.enabled = true;
+                stackAmount.text = "" + item.stackAmount;
             } else {
                 image.sprite = emptyCellSprite;
                 image.color = emptyCellColor;
+                stackAmount.enabled = false;
             }
         }
     }
 
-    public void OnClick() {
-        if(!inventoryUI.grabbingItem) {
+    public void OnClick(int mouseNumber) {
+        if(mouseNumber == 0)
             inventoryUI.Grab(index, item);
-            inventoryUI.grabbingItem = true;
-        } else {
-            inventoryUI.Move(index, item);
-            inventoryUI.grabbingItem = false;
-        }
+        else
+            inventoryUI.GrabHalf(index, item);
     }
 }

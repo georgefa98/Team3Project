@@ -16,4 +16,4 @@ MonoBehaviour:
   description: A thick wooden board.
   icon: {fileID: 21300000, guid: d7e57489e2977d5489f6ffd549332908, type: 3}
   value: 10
-  maxStackAmount: 10
+  maxStackAmount: 5

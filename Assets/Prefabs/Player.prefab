@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 6582674853785981835}
   - component: {fileID: 509999347988129945}
   - component: {fileID: 6582674853785981829}
-  - component: {fileID: 74351563}
+  - component: {fileID: 4785725811780313494}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -235,8 +235,7 @@ MonoBehaviour:
   runSpeed: 7
   lookSpeed: {x: 2, y: 2}
   jumpIntensity: 8
-  running: 0
-  crouching: 0
+  uiMode: 0
   gravityMult: 2
 --- !u!143 &6582674853785981829
 CharacterController:
@@ -256,7 +255,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &74351563
+--- !u!114 &4785725811780313494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,16 +264,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6582674853785981832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb3993096dbbd2d4da5b0f4934c6b272, type: 3}
+  m_Script: {fileID: 11500000, guid: ecf84d17e14aea54fba1feceec7ca78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 1425891052498032116, guid: 41a17a98f91b4f842af31e4466cbff36, type: 3}
-  - {fileID: 1425891052498032116, guid: 41a17a98f91b4f842af31e4466cbff36, type: 3}
-  - {fileID: 1425891052498032116, guid: 41a17a98f91b4f842af31e4466cbff36, type: 3}
-  - {fileID: 7527662911518731522, guid: 900140bd6b5a566489099a17ea9743e6, type: 3}
-  - {fileID: 7527662911518731522, guid: 900140bd6b5a566489099a17ea9743e6, type: 3}
-  - {fileID: 0}
 --- !u!1 &6582674854299163608
 GameObject:
   m_ObjectHideFlags: 0

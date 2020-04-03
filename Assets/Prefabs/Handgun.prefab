@@ -412,10 +412,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166436c0d3437ef40819e262e6ac3b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 20
   cooldown: 0.45
   ammo: 9
   capacity: 9
-  damage: 50
   shootRange: 100
   aimSpeed: 3
   aimedPosition: {x: 0, y: -0.1, z: 0.3}

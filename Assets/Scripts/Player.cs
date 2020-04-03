@@ -26,7 +26,7 @@ public class Player : Mob
 
     /* Misc */
     Transform hand;
-
+    FPSController fps;
     Transform upperBody;
     public List<GameObject> tools;
 
@@ -34,6 +34,7 @@ public class Player : Mob
     {
         upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
+        fps = GetComponent<FPSController>();
 
         if(tools.Count > 0) {
             GameObject itemObj = Instantiate(tools[0], Vector3.zero, Quaternion.identity);
@@ -137,10 +138,12 @@ public class Player : Mob
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
                 uiMode = true;
+                fps.uiMode = true;
             } else {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 uiMode = false;
+                fps.uiMode = false;
             }
         }
 

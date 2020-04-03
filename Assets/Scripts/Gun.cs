@@ -65,15 +65,11 @@ public class Gun : Weapon
                 if(rch.collider.gameObject.tag == "EnemyBody") {
                     Debug.Log(rch.collider.gameObject.name);
 					
-                    GameObject hitMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    hitMarker.transform.position = rch.point;
-                    hitMarker.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-					
 					//Decrease health
-					float enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
-					enemy_health = enemy_health - damage;
-					rch.collider.gameObject.transform.root.GetComponent<Enemy>().setHealth(enemy_health);
-					// Add blood splatter here
+					Enemy enemy = rch.collider.gameObject.transform.root.GetComponent<Enemy>();
+                    enemy.TakeBulletDamage(damage, rch.point, transform.forward);
+
+                    break;
                 }
             }
             

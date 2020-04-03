@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        timeOfDay = 0f;
     }
 
     void Update()

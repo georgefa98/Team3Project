@@ -5,12 +5,10 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-
     public int nItemsWidth;
     InventoryController inventoryController;
     RectTransform mainPanel;
     GameObject itemButton;
-    Texture2D texture;
     GameObject[] slots;
     GameObject infoPanel;
 
@@ -46,8 +44,6 @@ public class InventoryUI : MonoBehaviour
     }
 
     public void Generate() {
-
-        Debug.Log("Generate");
         int sizeX = nItemsWidth;
         int sizeY = (int)Mathf.Ceil(inventoryController.Length/(float)sizeX);
 
@@ -55,7 +51,6 @@ public class InventoryUI : MonoBehaviour
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, sizeX * 100f);
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, sizeY * 100f);
 
-        texture = Resources.Load("Images/UI/wood_icon") as Texture2D;
         slots = new GameObject[inventoryController.Length];
 
         for(int i = 0; i < inventoryController.Length; i++) {
@@ -73,7 +68,6 @@ public class InventoryUI : MonoBehaviour
     }
 
     public void Ripdown() {
-        Debug.Log("Ripdown");
         active = false;
         for(int i = 0; i < slots.GetLength(0); i++) {
                 Destroy(slots[i]);
@@ -108,27 +102,55 @@ public class InventoryUI : MonoBehaviour
     }
 
     public void GrabHalf(int index, Item item) {
-        if(selected != null || item == null)
+        if(item == null && selected == null)
             return;
-
+            
         Item first = ScriptableObject.CreateInstance("Item") as Item;
         Item second = ScriptableObject.CreateInstance("Item") as Item;
+        
+        if(item != null)
+            first.itemInfo = item.itemInfo;
+        else
+            first.itemInfo = selected.itemInfo;
 
-        first.itemInfo = item.itemInfo;
         second.itemInfo = first.itemInfo;
 
-        first.stackAmount = item.stackAmount/2;
-        second.stackAmount = item.stackAmount - first.stackAmount;
+        if(selected != null) {
+            if(item != null) {
+                if(selected.itemInfo.itemName == item.itemInfo.itemName) {
+                    second.stackAmount = selected.stackAmount / 2;
+                    first.stackAmount = (selected.stackAmount - second.stackAmount) + item.stackAmount;
+
+                    if(first.stackAmount > item.itemInfo.maxStackAmount) {
+                        second.stackAmount = second.stackAmount + (first.stackAmount - item.itemInfo.maxStackAmount);
+                        first.stackAmount = item.itemInfo.maxStackAmount;
+                    }
+
+                } else {
+                    return;
+                }
+            } else {
+                first.stackAmount = selected.stackAmount/2;
+                second.stackAmount = selected.stackAmount - first.stackAmount;
+            }
+        } else {
+            first.stackAmount = item.stackAmount/2;
+            second.stackAmount = item.stackAmount - first.stackAmount;
+        }
 
         if(first.stackAmount > 0)
             slots[index].GetComponent<ItemSlot>().CurrentItem = first;
         else
             slots[index].GetComponent<ItemSlot>().CurrentItem = null;
 
-        selected = second;
+        if(second.stackAmount > 0) {
+            selected = second;
+            grabbedItem.CurrentItem = second;
+            grabbedItem.Show();
+        } else {
+            grabbedItem.Hide();
+        }
 
-        grabbedItem.CurrentItem = item;
-        grabbedItem.Show();
         selectedIndex = index;
     }
 

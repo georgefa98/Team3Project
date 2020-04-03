@@ -8,6 +8,7 @@ public class GrabbedItem : MonoBehaviour
     RectTransform rectTransform;
     Image panel;
     Image icon;
+    Text stackAmount;
 
     Sprite emptyCellSprite;
     Color emptyCellColor;
@@ -20,6 +21,7 @@ public class GrabbedItem : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         panel = GetComponent<Image>();
         icon = transform.GetChild(0).GetComponent<Image>();
+        stackAmount = transform.GetChild(1).GetComponent<Text>();
 
         emptyCellSprite = icon.sprite;
         emptyCellColor = icon.color;
@@ -42,9 +44,11 @@ public class GrabbedItem : MonoBehaviour
             if(item != null) {
                 icon.sprite = item.itemInfo.icon;
                 icon.color = Color.white;
+                stackAmount.text = "" + item.stackAmount;
             } else {
                 icon.sprite = emptyCellSprite;
                 icon.color = emptyCellColor;
+                stackAmount.text = "";
             }
         }
     }
@@ -52,15 +56,18 @@ public class GrabbedItem : MonoBehaviour
     public void AllowClickThrough() {
         panel.raycastTarget = false;
         icon.raycastTarget = false;
+        stackAmount.raycastTarget = false;
     }
 
     public void Hide() {
         panel.enabled = false;
         icon.enabled = false;
+        stackAmount.enabled = false;
     }
 
     public void Show() {
         panel.enabled = true;
         icon.enabled = true;
+        stackAmount.enabled = true;
     }
 }

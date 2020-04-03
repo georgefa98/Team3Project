@@ -19,6 +19,7 @@ public class FPSController : MonoBehaviour
     /* States */
     bool running;
     bool crouching;
+    public bool uiMode;
 
     /* Physics */
     public float gravityMult;
@@ -56,8 +57,10 @@ public class FPSController : MonoBehaviour
 
         jump = Input.GetAxis("Jump");
 
-        transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
-        cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
+        if(!uiMode) {
+            transform.rotation *=  Quaternion.AngleAxis(lookSpeed.x * mouseX, Vector3.up);
+            cam.transform.rotation *= Quaternion.AngleAxis(lookSpeed.y * mouseY, Vector3.left);
+        }
         
     }
 

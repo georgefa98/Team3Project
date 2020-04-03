@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Mob
 {
+    
+    public GameObject splatter;
 
     NavMeshAgent agent;
     Transform player;
     Animator animator;
-	private static float health = 100;
-
+    
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
+
+        health = 100f;
     }
 
     // Update is called once per frame
@@ -32,21 +35,19 @@ public class Enemy : MonoBehaviour
 		if (health <= 0)
 			Die();
     }
+
+    public void TakeBulletDamage(float damage, Vector3 hitPoint, Vector3 direction) {
+        Instantiate(splatter, hitPoint, Quaternion.FromToRotation(Vector3.forward, direction));
+
+        this.TakeDamage(damage);
+    }
 	
-	public void setHealth(float newHealth)
-	{
-		health = newHealth;
-	}
-	
-	public float getHealth()
-	{
-		return health;
-	}
-	
-	void Die()
+	public override IEnumerator Die()
 	{
 		//Death animation here
 		
+        yield return new WaitForSeconds(2f);
+
 		Destroy(gameObject);
 	}
 }

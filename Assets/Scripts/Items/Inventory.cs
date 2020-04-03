@@ -2,20 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+[CreateAssetMenu(fileName = "Inventory", menuName = "ScriptableObjects/Inventory", order = 1)]
+public class Inventory : ScriptableObject
 {
+    public List<Item> items;
 
-    public Item[] items;
-    
-    void Awake()
-    {
-    }
-
-    public int GetSize() {
-        return items.Length;
-    }
-
-    public Item GetItem(int n) {
-        return items[n];
-    }
 }

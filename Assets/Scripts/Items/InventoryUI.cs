@@ -7,9 +7,10 @@ public class InventoryUI : MonoBehaviour
 {
 
     public string inventoryName;
-    public int nItemsWidth;
+    public int nItemsX;
     public InventoryController inventoryController;
     public GrabbedItem grabbedItem;
+    public float itemSlotWidth = 60f;
 
     RectTransform mainPanel;
     GameObject itemButton;
@@ -50,12 +51,12 @@ public class InventoryUI : MonoBehaviour
         nameText.text = inventoryName;
         nameText.enabled = true;
 
-        int sizeX = nItemsWidth;
+        int sizeX = nItemsX;
         int sizeY = (int)Mathf.Ceil(inventoryController.Length/(float)sizeX);
 
         active = true;
-        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, sizeX * 90f + 10f);
-        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, sizeY * 90f + 10f + nameHeight);
+        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, sizeX * itemSlotWidth + 10f);
+        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, sizeY * itemSlotWidth + 10f + nameHeight);
 
         slots = new GameObject[inventoryController.Length];
 
@@ -64,8 +65,8 @@ public class InventoryUI : MonoBehaviour
                 slots[i].transform.SetParent(transform, false);
 
                 RectTransform objRect = slots[i].GetComponent<RectTransform>();
-                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 10f + 90f * Mathf.Floor(i%sizeX), 80f);
-                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 10f + 90f * Mathf.Floor(i/sizeX) + nameHeight, 80f);
+                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 5f + itemSlotWidth * Mathf.Floor(i%sizeX), itemSlotWidth);
+                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 5f + itemSlotWidth * Mathf.Floor(i/sizeX) + nameHeight, itemSlotWidth);
 
                 ItemSlot itemSlot = slots[i].GetComponent<ItemSlot>();
                 itemSlot.CurrentItem = inventoryController.GetItem(i);

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486ce35afdb3c6a45be002cef1a7254a, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  itemName: Pistol
+  description: An M1911 9mm pistol.
+  icon: {fileID: 21300000, guid: 6fc3ee3b255a22546a653a7afb57c335, type: 3}
+  value: 100
+  maxStackAmount: 1
+  toolObject: {fileID: 3598347737433923508, guid: 8de5a31763e044a4fb9c4310659fda66,
+    type: 3}

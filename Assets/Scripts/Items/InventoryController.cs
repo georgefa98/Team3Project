@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void InventoryChangeHandler();
+
 public class InventoryController : MonoBehaviour
 {
 
@@ -9,6 +11,8 @@ public class InventoryController : MonoBehaviour
     public Inventory inventoryValues;
     private Inventory inventory;
     
+    public InventoryChangeHandler inventoryChangeDelegate;
+
     void Awake()
     {
         inventory = ScriptableObject.CreateInstance("Inventory") as Inventory;
@@ -17,6 +21,7 @@ public class InventoryController : MonoBehaviour
         for(int i = 0; i < inventoryValues.items.Count; i++) {
             inventory.items.Add(inventoryValues.items[i]);
         }
+
     }
 
     public int Length {
@@ -36,14 +41,21 @@ public class InventoryController : MonoBehaviour
         Item tmp = inventory.items[a];
         inventory.items[a] = inventory.items[b];
         inventory.items[b] = tmp;
+
+        if(inventoryChangeDelegate != null)
+            inventoryChangeDelegate();
     }
 
     public void Insert(Item item, int n) {
         inventory.items[n] = item;
+        if(inventoryChangeDelegate != null)
+            inventoryChangeDelegate();
     }
 
     public void Remove(int n) {
         inventory.items[n] = null;
+        if(inventoryChangeDelegate != null)
+            inventoryChangeDelegate();
     }
 
     public void ChangeCapacity(int capacity) {
@@ -58,6 +70,8 @@ public class InventoryController : MonoBehaviour
                 inventory.items.Insert(Length, null);
             }
         }
+        if(inventoryChangeDelegate != null)
+            inventoryChangeDelegate();
     }
 
 }

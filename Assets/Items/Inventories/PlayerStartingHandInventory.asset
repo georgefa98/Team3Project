@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerStartingHandInventory
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: 64ec90623ce3d0d4ab24f0dcfac84541, type: 2}
-  - {fileID: 11400000, guid: 902f9c44a47939848906b5ce0ef73c70, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 2ce8564a3c32f794f83e0d3040ef036b, type: 2}
+  - {fileID: 11400000, guid: 74a17210938fb1d498714ff2a211a9c2, type: 2}
+  - {fileID: 11400000, guid: d79f3be9f97a3ab4ca84261d2942bb60, type: 2}

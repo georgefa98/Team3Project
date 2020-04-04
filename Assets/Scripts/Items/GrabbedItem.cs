@@ -58,7 +58,10 @@ public class GrabbedItem : MonoBehaviour
             if(item != null) {
                 icon.sprite = item.itemInfo.icon;
                 icon.color = Color.white;
-                stackAmount.text = "" + item.stackAmount;
+                if(item.itemInfo.GetType() != typeof(Equipable))
+                    stackAmount.text = "" + item.stackAmount;
+                else
+                    stackAmount.text = "";
             } else {
                 icon.sprite = emptyCellSprite;
                 icon.color = emptyCellColor;

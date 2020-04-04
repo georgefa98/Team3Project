@@ -84,7 +84,10 @@ public class ItemSlot : MonoBehaviour
                 image.sprite = item.itemInfo.icon;
                 image.color = Color.white;
                 stackAmount.enabled = true;
-                stackAmount.text = "" + item.stackAmount;
+                if(item.itemInfo.GetType() != typeof(Equipable))
+                    stackAmount.text = "" + item.stackAmount;
+                else
+                    stackAmount.text = "";
             } else {
                 image.sprite = emptyCellSprite;
                 image.color = emptyCellColor;

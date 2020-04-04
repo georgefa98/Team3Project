@@ -3015,6 +3015,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3746162055123648731, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3746162055123648731, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3746162055123648731, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3746162055123648731, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3746162055123648731, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3746162055343918208, guid: 46c17b4641062364abebb5a8abb8b691,
         type: 3}
       propertyPath: m_Name
@@ -3124,6 +3149,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3746162055912679799, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: nItemsX
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084324354075076603, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.20291919
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084324354075076603, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.42708704
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084324354075076603, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.754717
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764750095658346471, guid: 46c17b4641062364abebb5a8abb8b691,
+        type: 3}
+      propertyPath: nItemsX
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46c17b4641062364abebb5a8abb8b691, type: 3}

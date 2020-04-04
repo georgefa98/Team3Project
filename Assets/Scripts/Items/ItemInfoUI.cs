@@ -28,8 +28,13 @@ public class ItemInfoUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        rectTransform.anchoredPosition = new Vector2(Input.mousePosition.x + 10f, Input.mousePosition.y - 10f);
+        rectTransform.anchoredPosition = new Vector2(Input.mousePosition.x + 20f, Input.mousePosition.y);
+        
+        if(Input.mousePosition.y < Screen.height/2f) {
+            rectTransform.pivot = new Vector2(0f, 0f);
+        } else {
+            rectTransform.pivot = new Vector2(0f, 1f);
+        }
     }
 
     public Item CurrentItem {
@@ -41,6 +46,10 @@ public class ItemInfoUI : MonoBehaviour
             if(item != null) {
                 nameText.text = item.itemInfo.itemName;
                 descriptionText.text = item.itemInfo.description;
+                if(item.itemInfo.GetType() == typeof(Consumable)) {
+                    descriptionText.text += "(Shift-Click to use)";
+                }
+
             } else {
                 nameText.text = "";
                 descriptionText.text = "";

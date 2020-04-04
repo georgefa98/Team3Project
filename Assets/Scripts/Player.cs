@@ -36,13 +36,12 @@ public class Player : Mob
     Transform hand;
     FPSController fps;
     Transform upperBody;
-    public List<GameObject> tools;
-
-    
 
     public InventoryUI handInventory;
     public InventoryUI bagInventory;
     public InventoryUI lootingInventory;
+
+    InventoryController handInventoryContr;
 
     void Start()
     {
@@ -51,20 +50,12 @@ public class Player : Mob
         fps = GetComponent<FPSController>();
         statusEffects = new List<StatusEffect>();
 
-        if(tools.Count > 0) {
-            GameObject itemObj = Instantiate(tools[0], Vector3.zero, Quaternion.identity);
-            itemObj.transform.SetParent(hand);
-            itemObj.transform.localPosition = Vector3.zero;
-            itemObj.transform.localRotation = Quaternion.identity;
-        }
-
         currentItem = 0;
-
         health = maxHealth;
         energy = maxEnergy;
         alive = true;
 
-        InventoryController handInventoryContr, bagInventoryContr;
+        InventoryController bagInventoryContr;
         InventoryController[] ics = GetComponents<InventoryController>();
         if(ics[0].inventoryName == "Hand") {
             handInventoryContr = ics[0];
@@ -76,6 +67,10 @@ public class Player : Mob
 
         handInventory.inventoryController = handInventoryContr;
         bagInventory.inventoryController = bagInventoryContr;
+
+        EquipCurrentItem();
+
+        handInventoryContr.inventoryChangeDelegate += OnInventoryChange;
     }
 
     void Update()
@@ -127,15 +122,9 @@ public class Player : Mob
             /*Switch item (scroll wheel)*/
             if(switchItem && switchingTimer <= 0f) {
                 switchingTimer = 0.1f;
+                currentItem = (currentItem + 1) % handInventoryContr.Length;
 
-                Destroy(hand.GetChild(0).gameObject);
-
-                currentItem = (currentItem + 1) % tools.Count;
-
-                GameObject itemObj = Instantiate(tools[currentItem], Vector3.zero, Quaternion.identity);
-                itemObj.transform.SetParent(hand);
-                itemObj.transform.localPosition = Vector3.zero;
-                itemObj.transform.localRotation = Quaternion.identity;
+                EquipCurrentItem();
 
             }
             
@@ -207,6 +196,10 @@ public class Player : Mob
 
     }
 
+    public void OnInventoryChange() {
+        EquipCurrentItem();
+    }
+
     public void EnterUIMode(string uiType) {
         this.uiType = uiType;
         Cursor.visible = true;
@@ -229,6 +222,21 @@ public class Player : Mob
             lootingInventory.Toggle();
         }
 
+    }
+
+    public void EquipCurrentItem() {
+        if(hand.childCount > 0)
+            Destroy(hand.GetChild(0).gameObject);
+
+        Item item = handInventoryContr.GetItem(currentItem);
+        if(item != null && item.itemInfo.GetType() == typeof(Equipable)) {
+            Equipable equipable = (Equipable)item.itemInfo;
+            GameObject itemObj = Instantiate(equipable.toolObject, Vector3.zero, Quaternion.identity);
+        
+            itemObj.transform.SetParent(hand);
+            itemObj.transform.localPosition = Vector3.zero;
+            itemObj.transform.localRotation = Quaternion.identity;
+        }
     }
 
     public float GetWeaponCharge() {

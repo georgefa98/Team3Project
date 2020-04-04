@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Mob : MonoBehaviour
 {
+    public float maxHealth = 100f;
     protected float health;
     protected bool alive;
     protected bool vulnerable;
@@ -12,8 +13,12 @@ public class Mob : MonoBehaviour
         get { return health; }
     }
 
+    void Start() {
+        health = maxHealth;
+    }
+
     public void TakeDamage(float damage) {
-        health = Mathf.Clamp(health - damage, -1f, 100);
+        health = Mathf.Clamp(health - damage, -1f, maxHealth);
         if(health <= 0) {
             StartCoroutine(Die());
         }

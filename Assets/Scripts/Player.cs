@@ -15,7 +15,12 @@ public class Player : Mob
     bool exit;
 
     /* Game Stats */
+    public float maxEnergy;
     float energy;
+    
+    /* Status Effects */
+    public List<StatusEffect> statusEffects;
+    public List<float> durationLeft;
 
     /* States */
     private int currentItem;
@@ -32,14 +37,19 @@ public class Player : Mob
     FPSController fps;
     Transform upperBody;
     public List<GameObject> tools;
+
+    
+
+    public InventoryUI handInventory;
+    public InventoryUI bagInventory;
     public InventoryUI lootingInventory;
-    public InventoryUI inventory;
 
     void Start()
     {
         upperBody = transform.GetChild(1);
         hand = upperBody.GetChild(0);
         fps = GetComponent<FPSController>();
+        statusEffects = new List<StatusEffect>();
 
         if(tools.Count > 0) {
             GameObject itemObj = Instantiate(tools[0], Vector3.zero, Quaternion.identity);
@@ -50,14 +60,26 @@ public class Player : Mob
 
         currentItem = 0;
 
-        health = 100f;
-        energy = 100f;
+        health = maxHealth;
+        energy = maxEnergy;
         alive = true;
+
+        InventoryController handInventoryContr, bagInventoryContr;
+        InventoryController[] ics = GetComponents<InventoryController>();
+        if(ics[0].inventoryName == "Hand") {
+            handInventoryContr = ics[0];
+            bagInventoryContr = ics[1];
+        } else {
+            handInventoryContr = ics[1];
+            bagInventoryContr = ics[0];
+        }
+
+        handInventory.inventoryController = handInventoryContr;
+        bagInventory.inventoryController = bagInventoryContr;
     }
 
     void Update()
     {
-
         /*Update player input*/
         fire = Input.GetButtonDown("Fire1");
         reload = Input.GetButtonDown("Reload");
@@ -91,8 +113,10 @@ public class Player : Mob
                 RaycastHit raycastHit;
                 if(Physics.Raycast(upperBody.position, upperBody.forward, out raycastHit, 3f)) {
                     if(raycastHit.collider.gameObject.tag == "Interactive") {
+                        lootingInventory.inventoryName = raycastHit.collider.gameObject.name;
                         lootingInventory.inventoryController = raycastHit.collider.gameObject.GetComponent<InventoryController>();
-                        inventory.Toggle();
+                        handInventory.Toggle();
+                        bagInventory.Toggle();
                         lootingInventory.Toggle();
                         EnterUIMode("LootingInventory");
                     }
@@ -150,7 +174,8 @@ public class Player : Mob
 
             /* Inventory */
             if(openInventory) {
-                inventory.Toggle();
+                handInventory.Toggle();
+                bagInventory.Toggle();
                 EnterUIMode("Inventory");
             }
             
@@ -160,7 +185,25 @@ public class Player : Mob
             }
         }
 
-        this.TakeEnergy(-Time.deltaTime);
+        this.TakeEnergy(Time.deltaTime);
+
+        for(int i = 0; i < statusEffects.Count; i++) {
+            StatusEffect s = statusEffects[i];
+            switch(s.statEffected) {
+                case StatusEffect.StatEffected.Health:
+                    TakeDamage(-(s.amount/s.duration) * Time.deltaTime);
+                    break;
+                case StatusEffect.StatEffected.Energy:
+                    TakeEnergy(-(s.amount/s.duration) * Time.deltaTime);
+                    break;
+            }
+
+            durationLeft[i] -= Time.deltaTime;
+            if(durationLeft[i] < 0) {
+                statusEffects.RemoveAt(i);
+                durationLeft.RemoveAt(i);
+            }
+        }
 
     }
 
@@ -178,9 +221,11 @@ public class Player : Mob
         fps.uiMode = false;
 
         if(uiType == "Inventory") {
-            inventory.Toggle();
+            handInventory.Toggle();
+            bagInventory.Toggle();
         } else if(uiType == "LootingInventory") {
-            inventory.Toggle();
+            handInventory.Toggle();
+            bagInventory.Toggle();
             lootingInventory.Toggle();
         }
 
@@ -206,10 +251,17 @@ public class Player : Mob
         energy = Mathf.Clamp(energy - cost, 0f, 100f);
     }
 
+    public void AddStatusEffect(StatusEffect s) {
+        statusEffects.Add(s);
+        durationLeft.Add(s.duration);
+    }
+
     public override IEnumerator Die() {
         yield return new WaitForSeconds(1f);
         Debug.Log("You Died");
     }
+
+    
 
 }
 

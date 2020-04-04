@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+
+    public string inventoryName;
     public int nItemsWidth;
     public InventoryController inventoryController;
     public GrabbedItem grabbedItem;
@@ -14,6 +16,7 @@ public class InventoryUI : MonoBehaviour
     GameObject[] slots;
     GameObject infoPanel;
     System.Random random;
+    Text nameText;
 
     bool active;
 
@@ -26,6 +29,8 @@ public class InventoryUI : MonoBehaviour
         mainPanel = GetComponent<RectTransform>();
         itemButton = Resources.Load("Prefabs/UI/ItemButton") as GameObject;
         infoPanel = GameObject.FindGameObjectWithTag("ItemInfo") as GameObject;
+        nameText = transform.GetChild(0).GetComponent<Text>();
+        nameText.enabled = false;
     }
 
     public void Toggle() {
@@ -35,20 +40,22 @@ public class InventoryUI : MonoBehaviour
         } else {
             Ripdown();
 
-            infoPanel.GetComponent<Image>().enabled = false;
-            for(int i = 0; i < infoPanel.transform.childCount; i++) {
-                infoPanel.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            infoPanel.GetComponent<ItemInfoUI>().Hide();
         }
     }
 
     public void Generate() {
+
+        float nameHeight = 20f;
+        nameText.text = inventoryName;
+        nameText.enabled = true;
+
         int sizeX = nItemsWidth;
         int sizeY = (int)Mathf.Ceil(inventoryController.Length/(float)sizeX);
 
         active = true;
-        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, sizeX * 100f);
-        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, sizeY * 100f);
+        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, sizeX * 90f + 10f);
+        mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, sizeY * 90f + 10f + nameHeight);
 
         slots = new GameObject[inventoryController.Length];
 
@@ -57,8 +64,8 @@ public class InventoryUI : MonoBehaviour
                 slots[i].transform.SetParent(transform, false);
 
                 RectTransform objRect = slots[i].GetComponent<RectTransform>();
-                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 10f + 100f * Mathf.Floor(i%sizeX), 80f);
-                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 10f + 100f * Mathf.Floor(i/sizeX), 80f);
+                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 10f + 90f * Mathf.Floor(i%sizeX), 80f);
+                objRect.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, 10f + 90f * Mathf.Floor(i/sizeX) + nameHeight, 80f);
 
                 ItemSlot itemSlot = slots[i].GetComponent<ItemSlot>();
                 itemSlot.CurrentItem = inventoryController.GetItem(i);
@@ -76,6 +83,8 @@ public class InventoryUI : MonoBehaviour
 
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Horizontal, 0f);
         mainPanel.SetSizeWithCurrentAnchors(UnityEngine.RectTransform.Axis.Vertical, 0f);
+
+        nameText.enabled = false;
     }
 
     public void Grab(int index, Item item) {
@@ -186,10 +195,29 @@ public class InventoryUI : MonoBehaviour
             Item newItem2 = ScriptableObject.CreateInstance("Item") as Item;
             newItem2.itemInfo = item.itemInfo;
             newItem2.stackAmount = leftover;
+
             grabbedItem.CurrentItem = newItem2;
+            grabbedItem.Show();
+
+            return;
         }
 
         grabbedItem.CurrentItem = null;
+    }
+
+    public void Consume(int index, Item item) {
+        if(item.stackAmount <= 1) {
+            slots[index].GetComponent<ItemSlot>().CurrentItem = null;
+            inventoryController.Remove(index);
+
+        } else {
+            Item newItem = ScriptableObject.CreateInstance("Item") as Item;
+            newItem.itemInfo = item.itemInfo;
+            newItem.stackAmount = item.stackAmount - 1;
+
+            slots[index].GetComponent<ItemSlot>().CurrentItem = newItem;
+            inventoryController.Insert(newItem, index);
+        }
     }
 
     public int GetInventorySpace() {

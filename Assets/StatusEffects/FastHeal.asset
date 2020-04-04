@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a63d2b3fa3bb94a4eb71cca093bf409a, type: 3}
-  m_Name: Nail
+  m_Script: {fileID: 11500000, guid: 7f0dad5319a26e649ba4c81cb0543b8a, type: 3}
+  m_Name: FastHeal
   m_EditorClassIdentifier: 
-  itemName: Nail
-  description: A steel nail.
-  icon: {fileID: 21300000, guid: 633e30841def91442ad7cd803a4ace3d, type: 3}
-  value: 2
-  maxStackAmount: 10
+  statusName: Fast Heal
+  statEffected: 0
+  amount: 20
+  duration: 1

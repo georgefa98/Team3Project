@@ -104,7 +104,6 @@ public class GrabbedItem : MonoBehaviour
         GameObject[] invObjs = GameObject.FindGameObjectsWithTag("InventoryUI");
         
         foreach(GameObject invObj in invObjs) {
-            Debug.Log(invObj);
             InventoryUI invUI = invObj.GetComponent<InventoryUI>();
             total += invUI.GetInventorySpace();
         }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour
 {
 
-    GameObject infoPanel;
+    ItemInfoUI infoPanel;
     InventoryUI inventoryUI;
     Image image;
     Text stackAmount;
@@ -19,6 +19,8 @@ public class ItemSlot : MonoBehaviour
     private Item item;
     public int index;
 
+    Player player;
+
     void Awake() {
         image = transform.GetChild(0).GetComponent<Image>();
         stackAmount = transform.GetChild(1).GetComponent<Text>();
@@ -28,17 +30,25 @@ public class ItemSlot : MonoBehaviour
     }
 
     void Start() {
-        infoPanel = GameObject.FindGameObjectWithTag("ItemInfo");
+        infoPanel = GameObject.FindGameObjectWithTag("ItemInfo").GetComponent<ItemInfoUI>();
         inventoryUI = transform.parent.GetComponent<InventoryUI>();
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     /* Because this is run in late update,
     the InventoryUI can set itemClickedSlot to false*/
     void LateUpdate() {
+        bool useItem = Input.GetKey(KeyCode.LeftShift);
+
         if(hovering) {
             
             if(Input.GetMouseButtonDown(0)) {
-                OnClick(0);
+                if(!useItem)
+                    OnClick(0);
+                else
+                    UseItem();
+
                 inventoryUI.ReportSlotClicked();
             }
             else if(Input.GetMouseButtonDown(1)) {
@@ -53,32 +63,14 @@ public class ItemSlot : MonoBehaviour
     }
 
     public void OnPointerEnter() {
-        infoPanel.GetComponent<Image>().enabled = true;
-        
-        for(int i = 0; i < infoPanel.transform.childCount; i++) {
-            infoPanel.transform.GetChild(i).gameObject.SetActive(true);
-        }
-
-        Text itemName = infoPanel.transform.GetChild(0).GetComponent<Text>();
-        Text description = infoPanel.transform.GetChild(1).GetComponent<Text>();
-
-        if(item) {
-            itemName.text = item.itemInfo.itemName;
-            description.text = item.itemInfo.description;
-        } else {
-            itemName.text = "";
-            description.text = "";
-        }
+        infoPanel.CurrentItem = item;
+        infoPanel.Show();
 
         hovering = true;
     }
 
     public void OnPointerExit() {
-        infoPanel.GetComponent<Image>().enabled = false;
-        for(int i = 0; i < infoPanel.transform.childCount; i++) {
-            infoPanel.transform.GetChild(i).gameObject.SetActive(false);
-        }
-
+        infoPanel.Hide();
         hovering = false;
     }
 
@@ -106,5 +98,13 @@ public class ItemSlot : MonoBehaviour
             inventoryUI.Grab(index, item);
         else
             inventoryUI.GrabHalf(index, item);
+    }
+
+    public void UseItem() {
+        if(item != null && item.itemInfo.GetType() == typeof(Consumable)) {
+            Consumable consumable = (Consumable)item.itemInfo;
+            player.AddStatusEffect(consumable.statusEffect);
+            inventoryUI.Consume(index, item);
+        }
     }
 }

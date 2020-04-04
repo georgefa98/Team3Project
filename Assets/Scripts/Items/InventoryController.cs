@@ -5,8 +5,8 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
 
+    public string inventoryName;
     public Inventory inventoryValues;
-
     private Inventory inventory;
     
     void Awake()
@@ -20,7 +20,12 @@ public class InventoryController : MonoBehaviour
     }
 
     public int Length {
-        get { return inventory.items.Count; }
+        get {
+            if(inventory != null && inventory.items != null) {
+                return inventory.items.Count; 
+            } else
+                return 0;
+        }
     }
 
     public Item GetItem(int n) {

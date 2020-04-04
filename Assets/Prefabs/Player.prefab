@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 6582674853785981835}
   - component: {fileID: 509999347988129945}
   - component: {fileID: 6582674853785981829}
+  - component: {fileID: 1142925383}
   - component: {fileID: 4785725811780313494}
   m_Layer: 0
   m_Name: Player
@@ -211,13 +212,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef3019e94be82e468dc8559f559d03c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxEnergy: 100
+  statusEffects: []
+  durationLeft: []
   justStartedAiming: 0
   justStoppedAiming: 0
   uiMode: 0
+  uiType: 
   tools:
   - {fileID: 7369394314164067623, guid: 19457ce41e845704a9c21a31cae2801c, type: 3}
   - {fileID: 3900074280909770932, guid: fb55ec22a3642ed43b0e7cab6f99ad95, type: 3}
   - {fileID: 3598347737433923508, guid: 8de5a31763e044a4fb9c4310659fda66, type: 3}
+  handInventory: {fileID: 0}
+  bagInventory: {fileID: 0}
+  lootingInventory: {fileID: 0}
 --- !u!114 &509999347988129945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +264,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1142925383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582674853785981832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecf84d17e14aea54fba1feceec7ca78d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryName: Hand
+  inventoryValues: {fileID: 11400000, guid: c48924401f2a6dd45be91dcc07228232, type: 2}
 --- !u!114 &4785725811780313494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf84d17e14aea54fba1feceec7ca78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryName: Bag
+  inventoryValues: {fileID: 11400000, guid: 00847205b1326284fb2cdeff67986f23, type: 2}
 --- !u!1 &6582674854299163608
 GameObject:
   m_ObjectHideFlags: 0

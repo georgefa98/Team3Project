@@ -158,10 +158,14 @@ public class InventoryUI : MonoBehaviour
         }
 
         /* assign items to slot and 'hand' */
-        if(first.stackAmount > 0)
+        if(first.stackAmount > 0) {
             slots[index].GetComponent<ItemSlot>().CurrentItem = first;
-        else
+            inventoryController.Insert(first, index);
+        }
+        else {
             slots[index].GetComponent<ItemSlot>().CurrentItem = null;
+            inventoryController.Remove(index);
+        }
 
         if(second.stackAmount > 0) {
             grabbedItem.CurrentItem = second;

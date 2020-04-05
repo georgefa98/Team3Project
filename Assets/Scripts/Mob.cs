@@ -18,11 +18,16 @@ public class Mob : MonoBehaviour
     }
 
     public void TakeDamage(float damage) {
-        health = Mathf.Clamp(health - damage, -1f, maxHealth);
-        if(health <= 0) {
-            StartCoroutine(Die());
+        if (vulnerable)
+        {
+            health = Mathf.Clamp(health - damage, -1f, maxHealth);
+            if (health <= 0)
+            {
+                StartCoroutine(Die());
+            }
         }
     }
+
 
     public virtual IEnumerator Die() {
         alive = false;

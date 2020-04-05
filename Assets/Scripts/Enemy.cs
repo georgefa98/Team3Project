@@ -19,7 +19,8 @@ public class Enemy : Mob
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponentInChildren<Animator>();
 
-        health = 100f;
+        vulnerable = true;
+        health = maxHealth;
     }
 
     // Update is called once per frame

@@ -5,7 +5,8 @@ using UnityEngine;
 public class Mob : MonoBehaviour
 {
     public float maxHealth = 100f;
-    protected float health;
+    public float invincibilityDuration = 0.1f;
+    public float health;
     protected bool alive;
     protected bool vulnerable;
     
@@ -15,13 +16,23 @@ public class Mob : MonoBehaviour
 
     void Start() {
         health = maxHealth;
+        vulnerable = true;
     }
 
     public void TakeDamage(float damage) {
-        health = Mathf.Clamp(health - damage, -1f, maxHealth);
-        if(health <= 0) {
-            StartCoroutine(Die());
+        if(vulnerable) {
+            health = Mathf.Clamp(health - damage, -1f, maxHealth);
+            if(health <= 0) {
+                StartCoroutine(Die());
+            }
+            StartCoroutine(StartInvincability());
         }
+    }
+
+    public IEnumerator StartInvincability() {
+        vulnerable = false;
+        yield return new WaitForSeconds(invincibilityDuration);
+        vulnerable = true;
     }
 
     public virtual IEnumerator Die() {

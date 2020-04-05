@@ -53,6 +53,7 @@ public class Player : Mob
         currentItem = 0;
         health = maxHealth;
         energy = maxEnergy;
+        vulnerable = true;
         alive = true;
 
         InventoryController bagInventoryContr;

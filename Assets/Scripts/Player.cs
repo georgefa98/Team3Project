@@ -33,7 +33,7 @@ public class Player : Mob
     public string uiType;
 
     /* Misc */
-    Transform hand;
+    public Transform hand;
     FPSController fps;
     Transform upperBody;
 

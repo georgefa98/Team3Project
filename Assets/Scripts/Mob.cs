@@ -35,6 +35,7 @@ public class Mob : MonoBehaviour
         vulnerable = true;
     }
 
+
     public virtual IEnumerator Die() {
         alive = false;
         yield return new WaitForSeconds(1f);

@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour
     NavMeshAgent agent;
     Transform player;
     Animator animator;
-	private static int health = 100;
+	private static float health = 100f;
+	public float attack_power = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +34,12 @@ public class Enemy : MonoBehaviour
 			Die();
     }
 	
-	public void setHealth(int newHealth)
+	public void setHealth(float newHealth)
 	{
 		health = newHealth;
 	}
 	
-	public int getHealth()
+	public float getHealth()
 	{
 		return health;
 	}

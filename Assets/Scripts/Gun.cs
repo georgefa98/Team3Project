@@ -7,7 +7,7 @@ public class Gun : Item
     public float cooldown;
     public int ammo;
     public int capacity;
-	public int damage = 50; 	// Damage done to target
+	public float damage = 50f; 	// Damage done to target
 	public int shootRange = 100; //shooting range of gun
 
     GameObject meshObject;
@@ -49,16 +49,30 @@ public class Gun : Item
             RaycastHit[] raycastHits =  Physics.RaycastAll(transform.position, transform.forward);
             foreach(RaycastHit rch in raycastHits) {
                 if(rch.collider.gameObject.tag == "EnemyBody") {
-                    Debug.Log(rch.collider.gameObject.name);
+					string hit_body_part = rch.collider.gameObject.name;
+                    Debug.Log(hit_body_part);
 					
                     GameObject hitMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     hitMarker.transform.position = rch.point;
                     hitMarker.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 					
 					//Decrease health
-					int enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
-					enemy_health = enemy_health - damage;
-					rch.collider.gameObject.transform.root.GetComponent<Enemy>().setHealth(enemy_health);
+					float enemy_health = rch.collider.gameObject.transform.root.GetComponent<Enemy>().getHealth();
+					
+					// Which body part hit determines amount of damage
+					float final_damage = damage;
+					if (hit_body_part == "Head")
+						final_damage = damage * 2f;
+					else if (hit_body_part == "Hips")
+						final_damage = damage * 0.5f;
+					else if (hit_body_part.Contains("Arm"))
+						final_damage = damage * 0.5f;
+					else if (hit_body_part.Contains("Leg"))
+						final_damage = damage * 0.5f;
+					else if (hit_body_part == "Spine")
+						final_damage = damage;
+					
+					rch.collider.gameObject.transform.root.GetComponent<Enemy>().setHealth(enemy_health - final_damage);
 					// Add blood splatter here
                 }
             }

@@ -29,6 +29,15 @@ public class Mob : MonoBehaviour
         }
     }
 
+    public void TakeChipDamage(float damage) {
+        if(vulnerable) {
+            health = Mathf.Clamp(health - damage, -1f, maxHealth);
+            if(health <= 0) {
+                StartCoroutine(Die());
+            }
+        }
+    }
+
     public IEnumerator StartInvincability() {
         vulnerable = false;
         yield return new WaitForSeconds(invincibilityDuration);

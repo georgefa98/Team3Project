@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 		
 		player.enabled = true;
-		playerController.enabled = false;
+		playerController.enabled = true;
 		fpsCon.enabled = true;
 		
 		Time.timeScale = 1f;

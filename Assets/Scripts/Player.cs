@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Mob
 {
@@ -265,7 +266,9 @@ public class Player : Mob
 
     public override IEnumerator Die() {
         yield return new WaitForSeconds(1f);
-        Debug.Log("You Died");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene(2);
     }
 
     

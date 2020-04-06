@@ -302,6 +302,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc4381bba438c5f449c4c1704a2ecb2f, type: 3}
+--- !u!4 &74351562 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6582674853785981828, guid: fc4381bba438c5f449c4c1704a2ecb2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 74351561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &288924790
 GameObject:
   m_ObjectHideFlags: 0
@@ -3015,6 +3021,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d43b7f20c3f2545afc7f72360f35f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectile: {fileID: 3200415048759572940, guid: 982e34c835c63e64a9ac8f60694ea8d6,
+    type: 3}
+  player: {fileID: 74351562}
+  retreatDistance: 0
+  speed: 0
+  startTimeBtwShots: 0.5
+  stoppingDistance: 0
 --- !u!1 &2100325926
 GameObject:
   m_ObjectHideFlags: 0

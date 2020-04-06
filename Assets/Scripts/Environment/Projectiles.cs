@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Projectiles : MonoBehaviour
 {
+    public GameObject creature;
+    public float spawnTime = 30f;
+
+    private Rigidbody projectile;
     private Transform player;
     private Vector3 target;
 
@@ -15,30 +19,48 @@ public class Projectiles : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        target = new Vector3(player.position.x, player.position.y);
+        projectile = GetComponent<Rigidbody>();
+        // target = new Vector3(player.position.x, player.position.y);
+
+        projectile.useGravity = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-
-      
+        Path();
     }
 
-    public void OnTriggerEnter(Collider coll)
-    {
-        if (coll.gameObject.tag == "Player")
-        {
-            Player player = coll.gameObject.GetComponent<Player>();
-            player.TakeDamage(325f * Time.deltaTime);
-            // DestroyProjectile();
-        }
 
-        /* void DestroyProjectile()
+    void DestroyProjectile()
+    {
+        Destroy(gameObject);
+    }
+
+    void Mutate()
+    {
+        SpawnCreature();
+        DestroyProjectile();
+
+    }
+
+    void Path()
+    {
+        if ((Vector3.Distance(transform.position, player.position) > 3.5f) && (transform.position.y > 0.5f))
         {
-            Destroy(gameObject);
-        } */
+            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            projectile.useGravity = true;
+            Invoke("Mutate", spawnTime);
+        }
+    }
+
+    void SpawnCreature()
+    {
+        Instantiate(creature, transform.position, Quaternion.identity);
+        // Debug.Log("Object created");
 
     }
 

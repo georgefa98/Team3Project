@@ -71,6 +71,16 @@ public class Gun : Weapon
 
                     break;
                 }
+                if(rch.collider.gameObject.tag == "EnemyHead")
+                {
+                    Debug.Log(rch.collider.gameObject.name);
+
+                    //Decrease health
+                    HealthScript health = rch.collider.gameObject.transform.root.GetComponent<HealthScript>();
+                    health.ApplyDamage(damage);
+
+                    break;
+                }
             }
             
 

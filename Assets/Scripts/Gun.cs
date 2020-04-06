@@ -63,7 +63,6 @@ public class Gun : Weapon
             RaycastHit[] raycastHits =  Physics.RaycastAll(transform.position, transform.forward);
             foreach(RaycastHit rch in raycastHits) {
                 if(rch.collider.gameObject.tag == "EnemyBody") {
-                    Debug.Log(rch.collider.gameObject.name);
 					
 					//Decrease health
 					Enemy enemy = rch.collider.gameObject.transform.root.GetComponent<Enemy>();

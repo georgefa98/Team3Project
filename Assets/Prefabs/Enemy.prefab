@@ -176,7 +176,6 @@ MonoBehaviour:
   health: 0
   splatter: {fileID: 7647240694004713684, guid: bd7d137a66e3cb54c9087de1ea4d9f47,
     type: 3}
-  enemyVision: 1000
 --- !u!82 &2380706691281724763
 AudioSource:
   m_ObjectHideFlags: 0

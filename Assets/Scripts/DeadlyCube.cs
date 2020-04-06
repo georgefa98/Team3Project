@@ -35,7 +35,7 @@ public class DeadlyCube : MonoBehaviour
         
         if (Vector3.Distance(transform.position, player.position) > stoppingDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, Random.Range(2f, 6f)*Time.deltaTime, player.transform.position.z), speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, Random.Range(2f, 6f), player.transform.position.z), speed * Time.deltaTime);
         }
         else if (Vector3.Distance(transform.position, player.position) < stoppingDistance && Vector3.Distance(transform.position, player.position) > retreatDistance)
         {
@@ -43,7 +43,7 @@ public class DeadlyCube : MonoBehaviour
         }
         else if (Vector3.Distance(transform.position, player.position) < retreatDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, Random.Range(2f, 6f)*Time.deltaTime, player.transform.position.z), speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(player.transform.position.x, Random.Range(2f, 6f), player.transform.position.z), speed * Time.deltaTime);
         }
     }   // Enemy responds to player, retreating a safe distance away from the player*/
 

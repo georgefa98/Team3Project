@@ -31,7 +31,7 @@ public class Projectiles : MonoBehaviour
         if (coll.gameObject.tag == "Player")
         {
             Player player = coll.gameObject.GetComponent<Player>();
-            player.TakeDamage(10f * Time.deltaTime);
+            player.TakeDamage(325f * Time.deltaTime);
             // DestroyProjectile();
         }
 

@@ -14,10 +14,13 @@ public class Melee : Weapon
 
     private Animator anim;
     private float power;
-    
+    private GameObject hitBox;
+    public bool attacking;
+
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        hitBox = transform.GetChild(1).gameObject;
     }
 
     void Update() {
@@ -25,10 +28,23 @@ public class Melee : Weapon
             power = Mathf.Clamp(power + Time.deltaTime * chargeSpeed, 0f, 1f);
             anim.SetFloat("Power", power);
         }
+
+        if(attacking) {
+            Collider[] colls = Physics.OverlapBox(transform.position, Vector3.one, Quaternion.identity);
+            foreach(Collider coll in colls) {
+
+                if(coll.gameObject.tag == "EnemyBody") {
+                    Enemy enemy = coll.transform.parent.parent.parent.GetComponent<Enemy>();
+                    enemy.TakeDamage(1f);
+                }
+            }
+        }
     }
 
     public override void Use() {
         anim.SetTrigger("Attack");
+
+        StartCoroutine(EnableHitbox());
 
         /* play swing audio */
         AudioSource swingAudioSource = Instantiate(swingAudio).GetComponent<AudioSource>();
@@ -36,6 +52,16 @@ public class Melee : Weapon
         swingAudioSource.volume = Mathf.Lerp(minVolume, maxVolume, power);
 
         power = 0;
+    }
+
+    public IEnumerator EnableHitbox() {
+
+        attacking = true;
+
+        yield return new WaitForSeconds(0.2f);
+
+        attacking = false;
+
     }
 
     public override void StartAiming() {

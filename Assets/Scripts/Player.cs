@@ -53,6 +53,7 @@ public class Player : Mob
         currentItem = 0;
         health = maxHealth;
         energy = maxEnergy;
+        vulnerable = true;
         alive = true;
 
         InventoryController bagInventoryContr;
@@ -174,13 +175,11 @@ public class Player : Mob
             }
         }
 
-        this.TakeEnergy(Time.deltaTime);
-
         for(int i = 0; i < statusEffects.Count; i++) {
             StatusEffect s = statusEffects[i];
             switch(s.statEffected) {
                 case StatusEffect.StatEffected.Health:
-                    TakeDamage(-(s.amount/s.duration) * Time.deltaTime);
+                    TakeChipDamage(-(s.amount/s.duration) * Time.deltaTime);
                     break;
                 case StatusEffect.StatEffected.Energy:
                     TakeEnergy(-(s.amount/s.duration) * Time.deltaTime);

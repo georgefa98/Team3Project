@@ -4,6 +4,22 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
+  - Item
+  - Target
+  - Wood
+  - Concrete
+  - Dirt
+  - Fire
+  - Metal
+  - Crosshair
+  - NPC
+  - Flesh
+  - Cover
+  - Terrain
+  - Collision
+  - LootBox
+=======
   - SunLight
   - Enemy
   - EnemyBody
@@ -12,6 +28,7 @@ TagManager:
   - Interactive
   - EnemyHead
   - Ground
+>>>>>>> b2972463162f47b5e780857ff9c0950840071c04
   layers:
   - Default
   - TransparentFX
@@ -33,12 +50,12 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Weapon
+  - Player
+  - NPC
+  - Cover
+  - Target
+  - Dead
   - 
   - 
   - 

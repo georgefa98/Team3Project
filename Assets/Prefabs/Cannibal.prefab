@@ -551,7 +551,11 @@ MonoBehaviour:
   isCannibal: 1
   isDestroyableBullet: 0
   health: 100
+<<<<<<< HEAD
+  damageMultiplier: 2
+=======
   damageMultiplier: 0.5
+>>>>>>> b2972463162f47b5e780857ff9c0950840071c04
 --- !u!1 &1118747651455306
 GameObject:
   m_ObjectHideFlags: 0

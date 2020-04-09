@@ -3930,8 +3930,8 @@ MonoBehaviour:
 =======
   player: {fileID: 350304872}
   retreatDistance: 0
-  speed: 0
-  startTimeBtwShots: 2
+  speed: 1.9
+  startTimeBtwShots: 10
   stoppingDistance: 0
 >>>>>>> c0553f2fae77c5471196e6b327d901a4df78484e
 --- !u!1 &2100325926
